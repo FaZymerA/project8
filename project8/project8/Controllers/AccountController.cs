@@ -17,7 +17,6 @@ namespace project8.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationRoleManager _roleManager;
 
         public AccountController()
         {
@@ -28,17 +27,7 @@ namespace project8.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
-        }
+
         public ApplicationSignInManager SignInManager
         {
             get
