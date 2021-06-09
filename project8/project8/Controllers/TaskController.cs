@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace project8.Controllers
 {
+    [Authorize]
     public class TaskController : Controller
     {
         private ApplicationDbContext dbContext;
@@ -114,14 +115,14 @@ namespace project8.Controllers
         }
 
         [HttpPost]
-        public ActionResult FinishTaskWork(int taskId)
+        public ActionResult FinishTaskWork(TaskFinishViewModel model)
         {
-            var task = dbContext.Tasks.Find(taskId);
+            var task = dbContext.Tasks.Find(model.TaskId);
 
             if (task == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json($"There is no task with id: {taskId}.");
+                return Json($"There is no task with id: {model.TaskId}.");
             }
 
             if (!task.ResumedAt.HasValue)
@@ -137,9 +138,10 @@ namespace project8.Controllers
 
             task.FinishedAt = DateTime.Now;
             task.IsCompleted = true;
+            task.Comment = model.Comment;
             dbContext.SaveChanges();
 
-            return Json($"The task with id {taskId} was finished.");
+            return Json($"The task with id {model.TaskId} was finished.");
         }
 
         private long GetLastWorkSessionSeconds(Task task)

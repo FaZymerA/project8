@@ -14,11 +14,15 @@
 
 <button id="btnStart">Стартиране</button>
 <button id="btnPause">Пауза</button>
-<button>Продължаване</button>
+<button id="btnResume">Продължаване</button>
 <button id="btnStop">Завършване</button>
 
-<textarea></textarea>
+<br />
+<br />
+<br />
 
+<textarea id="commentInput" style="display: none;"></textarea>
+<button id="submitTask" style="display: none;">Изпращане</button>
 
 @section Scripts
     {
@@ -70,16 +74,28 @@
             });
 
             $("#btnStop").click(function () {
+                $("#commentInput").css('display', 'block');
+                $("#submitTask").css('display', 'block');
+            });
+
+            $("#submitTask").click(function () {
                 var selectedTaskId = $.getSelectedTask();
+                var comment = $("#commentInput").val();
 
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("FinishTaskWork", "Task")',
-                    data: '{ taskId: ' + selectedTaskId + '}',
+                    data: JSON.stringify({
+                        taskId: selectedTaskId,
+                        comment: comment
+                    })/*'{ taskId: ' + selectedTaskId + ', comment: ' + comment + '}'*/,
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
-                        $("#taskList option[value = '" + selectedTaskId + "']").remove()
+                        $("#taskList option[value = '" + selectedTaskId + "']").remove();
+                        $("#commentInput").val('');
+                        $("#commentInput").css('display', 'none');
+                        $("#submitTask").css('display', 'none');
                         console.log(response);
                     },
                     error: function (response) {
