@@ -9,11 +9,13 @@ namespace project8.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Comment { get; set; }
         public long Duration { get; set; }
+        public bool IsPaused { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
-        public DateTime ResumedAt { get; set; }
-        public DateTime FinishedAt { get; set; }
+        public DateTime? ResumedAt { get; set; }
+        public DateTime? FinishedAt { get; set; }
     }
 }

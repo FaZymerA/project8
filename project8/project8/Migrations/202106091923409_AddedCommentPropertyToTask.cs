@@ -1,0 +1,18 @@
+namespace project8.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class AddedCommentPropertyToTask : DbMigration
+    {
+        public override void Up()
+        {
+            AddColumn("dbo.Tasks", "Comment", c => c.String());
+        }
+        
+        public override void Down()
+        {
+            DropColumn("dbo.Tasks", "Comment");
+        }
+    }
+}

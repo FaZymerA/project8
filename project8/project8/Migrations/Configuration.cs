@@ -5,7 +5,7 @@ namespace project8.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<project8.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<project8.Data.ApplicationDbContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace project8.Migrations
             ContextKey = "project8.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(project8.Models.ApplicationDbContext context)
+        protected override void Seed(project8.Data.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
