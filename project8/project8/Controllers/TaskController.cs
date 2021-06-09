@@ -4,6 +4,7 @@ using project8.Models.TaskViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -77,14 +78,15 @@ namespace project8.Controllers
 
             if (task == null)
             {
-                return Json("failed");
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json($"There is no task with id: {taskId}.");
             }
 
             task.ResumedAt = DateTime.Now;
             task.IsPaused = false;
             dbContext.SaveChanges();
 
-            return Json("success");
+            return Json($"The task with id {taskId} was started.");
         }
 
         [HttpPost]
@@ -92,16 +94,23 @@ namespace project8.Controllers
         {
             var task = dbContext.Tasks.Find(taskId);
 
-            if (task == null || !task.ResumedAt.HasValue)
+            if (task == null)
             {
-                return Json("failed");
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json($"There is no task with id: {taskId}.");
+            }
+
+            if (!task.ResumedAt.HasValue)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json($"The task has not been started yet!");
             }
 
             task.Duration += GetLastWorkSessionSeconds(task);
             task.IsPaused = true;
             dbContext.SaveChanges();
 
-            return Json("success");
+            return Json($"The task with id {taskId} was paused.");
         }
 
         [HttpPost]
@@ -109,9 +118,16 @@ namespace project8.Controllers
         {
             var task = dbContext.Tasks.Find(taskId);
 
-            if (task == null || !task.ResumedAt.HasValue)
+            if (task == null)
             {
-                return Json("failed");
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json($"There is no task with id: {taskId}.");
+            }
+
+            if (!task.ResumedAt.HasValue)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json($"The task has not been started yet!");
             }
 
             if (!task.IsPaused)
@@ -123,7 +139,7 @@ namespace project8.Controllers
             task.IsCompleted = true;
             dbContext.SaveChanges();
 
-            return Json("success");
+            return Json($"The task with id {taskId} was finished.");
         }
 
         private long GetLastWorkSessionSeconds(Task task)

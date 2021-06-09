@@ -17,15 +17,22 @@
 <button>Продължаване</button>
 <button id="btnStop">Завършване</button>
 
+<textarea></textarea>
+
 
 @section Scripts
     {
     <script type="text/javascript">
 
         $(function () {
-            $("#btnStart").click(function () {
+            $.getSelectedTask = function () {
                 var selectedTaskId = $("#taskList").val();
-                alert(selectedTaskId);
+
+                return selectedTaskId;
+            }
+
+            $("#btnStart").click(function () {
+                var selectedTaskId = $.getSelectedTask();
 
                 $.ajax({
                     type: "POST",
@@ -33,20 +40,18 @@
                     data: '{ taskId: ' + selectedTaskId + '}',
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
-                    success: function () {
-                       // alert("Data has been added successfully.");
-                        alert("success");
+                    success: function (response) {
+                        console.log(response);
                     },
-                    error: function () {
-                        alert("Error while inserting data");
+                    error: function (response) {
+                        alert(response.responseText);
                     }
                 });
                 return false;
             });
 
             $("#btnPause").click(function () {
-                var selectedTaskId = $("#taskList").val();
-                alert(selectedTaskId);
+                var selectedTaskId = $.getSelectedTask();
 
                 $.ajax({
                     type: "POST",
@@ -54,20 +59,18 @@
                     data: '{ taskId: ' + selectedTaskId + '}',
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
-                    success: function () {
-                       // alert("Data has been added successfully.");
-                        alert("success");
+                    success: function (response) {
+                        console.log(response);
                     },
-                    error: function () {
-                        alert("Error while inserting data");
+                    error: function (response) {
+                        alert(response.responseText);
                     }
                 });
                 return false;
             });
 
             $("#btnStop").click(function () {
-                var selectedTaskId = $("#taskList").val();
-                alert(selectedTaskId);
+                var selectedTaskId = $.getSelectedTask();
 
                 $.ajax({
                     type: "POST",
@@ -75,12 +78,12 @@
                     data: '{ taskId: ' + selectedTaskId + '}',
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
-                    success: function () {
+                    success: function (response) {
                         $("#taskList option[value = '" + selectedTaskId + "']").remove()
-                        alert("success");
+                        console.log(response);
                     },
-                    error: function () {
-                        alert("Error while inserting data");
+                    error: function (response) {
+                        alert(response.responseText);
                     }
                 });
                 return false;
