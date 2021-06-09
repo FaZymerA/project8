@@ -1,4 +1,6 @@
-﻿using System;
+﻿using project8.Data;
+using project8.Models.TaskViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +10,21 @@ namespace project8.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext dbContext;
+
+        public HomeController()
+        {
+            dbContext = new ApplicationDbContext();
+        }
+
         public ActionResult Index()
         {
-            return View();
+            var taskNames = dbContext.Tasks
+                .Where(t => !t.IsCompleted)
+                .Select(t => new TaskBasicViewModel { Id = t.Id, Name = t.Name })
+                .ToArray();
+
+            return View(taskNames);
         }
 
         public ActionResult About()
