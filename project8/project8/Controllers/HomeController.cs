@@ -8,6 +8,8 @@ using System.Web.Mvc;
 
 namespace project8.Controllers
 {
+
+    [Authorize]
     public class HomeController : Controller
     {
         private ApplicationDbContext dbContext;
@@ -16,7 +18,6 @@ namespace project8.Controllers
         {
             dbContext = new ApplicationDbContext();
         }
-
         public ActionResult Index()
         {
             var taskNames = dbContext.Tasks

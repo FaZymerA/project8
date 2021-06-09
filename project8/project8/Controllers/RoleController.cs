@@ -9,6 +9,7 @@ using project8.Models;
 
 namespace project8.Controllers
 {
+    [Authorize]
     public class RoleController : Controller
     {
         private ApplicationRoleManager _roleManager;
